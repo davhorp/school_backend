@@ -1,0 +1,24 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /school_hermanos_grimm
+application:
+  security:
+    jwt:
+      secret-key: 7fb8a3f2c5d1e4a9b0c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4
+      #secret-key: ${JWT_SECRET_KEY}
+      expiration: 86400000
+      refresh-token:
+        expiration: 60480000
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/securitydb
+    username: postgres
+    password: rootpwd
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
