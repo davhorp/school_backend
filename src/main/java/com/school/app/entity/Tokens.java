@@ -7,6 +7,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Clase que contiene la configuraci&oacute;n de la tabla <code>Tokens</code> de la BD
+ */
 @Data
 @Builder
 @NoArgsConstructor
