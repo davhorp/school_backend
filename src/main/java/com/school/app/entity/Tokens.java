@@ -1,6 +1,5 @@
 package com.school.app.entity;
 
-import com.school.app.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

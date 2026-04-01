@@ -5,8 +5,8 @@ import com.school.app.auth.controller.RegisterRequest;
 import com.school.app.auth.controller.TokenResponse;
 import com.school.app.repository.TokenRepository;
 import com.school.app.entity.Tokens;
-import com.school.app.user.User;
-import com.school.app.user.UserRepository;
+import com.school.app.entity.User;
+import com.school.app.repository.UserRepository;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,6 +19,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class AuthService {
+
     private final UserRepository repository;
     private final TokenRepository tokenRepository;
     private final PasswordEncoder passwordEncoder;

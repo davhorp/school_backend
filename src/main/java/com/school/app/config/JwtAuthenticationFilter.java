@@ -2,8 +2,8 @@ package com.school.app.config;
 
 import com.school.app.repository.TokenRepository;
 import com.school.app.auth.service.JwtService;
-import com.school.app.user.User;
-import com.school.app.user.UserRepository;
+import com.school.app.entity.User;
+import com.school.app.repository.UserRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -27,10 +27,10 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    private final JwtService jwtService;
-    private final UserDetailsService userDetailsService;
-    private final TokenRepository tokenRepository;
-    private final UserRepository userRepository;
+    private JwtService jwtService;
+    private UserDetailsService userDetailsService;
+    private TokenRepository tokenRepository;
+    private UserRepository userRepository;
 
     @Override
     protected void doFilterInternal(

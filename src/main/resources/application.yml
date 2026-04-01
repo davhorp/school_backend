@@ -12,13 +12,20 @@ application:
         expiration: 60480000
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/securitydb
+    #url: jdbc:postgresql://localhost:5432/securitydb
+    url: jdbc:postgresql://localhost:5432/school_control
     username: postgres
-    password: rootpwd
+    #password: rootpwd
+    password: d4vh0rp90
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      #ddl-auto: create-drop
+      ddl-auto: update
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
     show-sql: true
+app:
+  school:
+    properties:
+      role: role

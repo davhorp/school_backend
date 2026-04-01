@@ -1,6 +1,6 @@
 package com.school.app.auth.service;
 
-import com.school.app.user.User;
+import com.school.app.entity.User;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -21,6 +21,12 @@ public class JwtService {
     @Value("${application.security.jwt.refresh-token.expiration}")
     private long refreshExpiration;
 
+    private static final long JWT_TIME_VALIDITY = 1000 * 60  * 15;
+    private static final long JWT_TIME_REFRESH_VALIDATE = 1000 * 60  * 60 * 24;
+
+    @Value("${app.school.properties.role}")
+    private String role;
+
     public String extractUsername(String token) {
         return Jwts.parser()
                 .verifyWith(getSignInKey())
@@ -31,20 +37,31 @@ public class JwtService {
     }
 
     public String generateToken(final User user) {
-        return buildToken(user, jwtExpiration);
+        return buildToken(user);
     }
 
     public String generateRefreshToken(final User user) {
-        return buildToken(user, refreshExpiration);
+        return refreshToken(user);
     }
 
-    private String buildToken(final User user, final long expiration) {
+    public String refreshToken(final User user) {
         return Jwts
                 .builder()
-                .claims(Map.of("name", user.getName()))
+                .claims(Map.of(role, "administrador"))
                 .subject(user.getEmail())
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + expiration))
+                .expiration(new Date(System.currentTimeMillis() + JWT_TIME_REFRESH_VALIDATE))
+                .signWith(getSignInKey())
+                .compact();
+    }
+
+    private String buildToken(final User user) {
+        return Jwts
+                .builder()
+                .claims(Map.of(role, "administrador"))
+                .subject(user.getEmail())
+                .issuedAt(new Date(System.currentTimeMillis()))
+                .expiration(new Date(System.currentTimeMillis() + JWT_TIME_VALIDITY))
                 .signWith(getSignInKey())
                 .compact();
     }
@@ -68,7 +85,7 @@ public class JwtService {
     }
 
     private SecretKey getSignInKey() {
-        final byte[] keyBytes = Decoders.BASE64.decode(secretKey);
-        return Keys.hmacShaKeyFor(keyBytes);
+        return Keys.hmacShaKeyFor(Decoders.BASE64.decode(secretKey));
     }
+
 }
