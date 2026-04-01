@@ -1,18 +1,13 @@
 package com.school.app.entity;
 
 import com.school.app.enums.GeneroType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -36,7 +31,7 @@ public class Persona {
     @Enumerated(EnumType.STRING)
     private GeneroType genero;
     private String telefono;
-    @Column(insertable = false, updatable = false)
     private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
 }
