@@ -44,17 +44,6 @@ public class RegisterService {
                             )
                     )
             );
-            Usuario usr = personaDTO.toEntityUser(
-                    request,
-                    person,
-                    rolService.getRolByName(
-                            RolType.valueOf(
-                                    request.rol()
-                            )
-                    ), passwordEncoder.encode(
-                            request.password()
-                    )
-            );
             usuarioRepository.save(
                     personaDTO.toEntityUser(
                             request,

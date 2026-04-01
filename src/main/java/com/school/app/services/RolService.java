@@ -1,6 +1,5 @@
 package com.school.app.services;
 
-import com.school.app.entity.Estado;
 import com.school.app.entity.Role;
 import com.school.app.enums.RolType;
 import com.school.app.exceptions.ResourceNotFoundException;

@@ -5,8 +5,6 @@ import com.school.app.entity.Persona;
 import com.school.app.entity.Role;
 import com.school.app.entity.Usuario;
 import com.school.app.enums.GeneroType;
-import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
