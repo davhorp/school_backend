@@ -48,5 +48,7 @@ public class Direccion {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_persona", nullable = false)
     private Persona persona;
-
+    @ManyToOne(fetch = FetchType.LAZY) // Generalmente queremos saber el estado de inmediato
+    @JoinColumn(name = "id_estado", nullable = false)
+    private Estado estado;
 }

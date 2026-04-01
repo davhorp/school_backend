@@ -20,6 +20,8 @@ public class Usuario {
     private Long idUsuario;
     @Column(unique = true, nullable = false, length = 50)
     private String username;
+    @Column(unique = true, nullable = false, length = 150)
+    private String email;
     @Column(name = "password_hash", nullable = false, length = 255)
     private String passwordHash;
     @Column(nullable = false)

@@ -2,10 +2,13 @@ package com.school.app.dto;
 
 import com.school.app.dto.requets.PersonRequest;
 import com.school.app.entity.Persona;
+import com.school.app.entity.Role;
+import com.school.app.entity.Usuario;
 import com.school.app.enums.GeneroType;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Component
@@ -33,5 +36,17 @@ public class PersonaDTO {
         persona.setApellidoPaterno(dto.apellidoPaterno());
         persona.setCreatedAt(LocalDateTime.now());
         return persona;
+    }
+
+    public Usuario toEntityUser(PersonRequest dto, Persona person, Role rol, String pass){
+        Usuario usr = new Usuario();
+        usr.setPersona(person);
+        usr.setActivo(true);
+        usr.setEmail(dto.email());
+        usr.setUsername(dto.username());
+        usr.setPasswordHash(pass);
+        usr.setRol(rol);
+        usr.setAceptoTerminos(true);
+        return usr;
     }
 }
