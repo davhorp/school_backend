@@ -2,7 +2,7 @@ package com.school.app.controllers;
 
 import com.school.app.dto.requets.PersonRequest;
 import com.school.app.dto.response.RegisterPersonResponse;
-import com.school.app.services.RegisterService;
+import com.school.app.services.auth.RegisterService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

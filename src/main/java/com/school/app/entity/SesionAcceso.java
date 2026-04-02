@@ -35,5 +35,7 @@ public class SesionAcceso {
     private boolean revoked;
     @Column(name = "is_expired", nullable = false)
     private boolean expired;
+    @Column(name = "sesion_active", nullable = false)
+    private boolean sessionActive;
 
 }

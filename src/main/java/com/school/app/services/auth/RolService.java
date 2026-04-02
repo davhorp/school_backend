@@ -1,4 +1,4 @@
-package com.school.app.services;
+package com.school.app.services.auth;
 
 import com.school.app.entity.Role;
 import com.school.app.enums.RolType;

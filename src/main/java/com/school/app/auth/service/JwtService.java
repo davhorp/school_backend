@@ -1,6 +1,7 @@
 package com.school.app.auth.service;
 
 import com.school.app.entity.User;
+import com.school.app.entity.Usuario;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -40,6 +41,14 @@ public class JwtService {
         return buildToken(user);
     }
 
+    public String generateTokenByUser(final Usuario user) {
+        return buildTokenByUser(user);
+    }
+
+    public String generateRefreshTokenByUser(final Usuario user) {
+        return refreshTokenByUser(user);
+    }
+
     public String generateRefreshToken(final User user) {
         return refreshToken(user);
     }
@@ -55,10 +64,32 @@ public class JwtService {
                 .compact();
     }
 
+    public String refreshTokenByUser(final Usuario user) {
+        return Jwts
+                .builder()
+                .claims(Map.of(role, user.getRol().getNombreRol()))
+                .subject(user.getEmail())
+                .issuedAt(new Date(System.currentTimeMillis()))
+                .expiration(new Date(System.currentTimeMillis() + JWT_TIME_REFRESH_VALIDATE))
+                .signWith(getSignInKey())
+                .compact();
+    }
+
     private String buildToken(final User user) {
         return Jwts
                 .builder()
                 .claims(Map.of(role, "administrador"))
+                .subject(user.getEmail())
+                .issuedAt(new Date(System.currentTimeMillis()))
+                .expiration(new Date(System.currentTimeMillis() + JWT_TIME_VALIDITY))
+                .signWith(getSignInKey())
+                .compact();
+    }
+
+    private String buildTokenByUser(final Usuario user) {
+        return Jwts
+                .builder()
+                .claims(Map.of(role, user.getRol().getNombreRol()))
                 .subject(user.getEmail())
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + JWT_TIME_VALIDITY))
