@@ -1,4 +1,4 @@
-package com.school.app.controllers;
+package com.school.app.controllers.exceptions;
 
 import com.school.app.dto.response.ExceptionResponse;
 import com.school.app.exceptions.*;
@@ -97,6 +97,30 @@ public class ExceptionResponseHandler extends ResponseEntityExceptionHandler {
                 "USER_NOT_ACTIVE",
                 ex.getMessage(),
                 "UserNotActiveInTheSystemException"
+        );
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(CodeVerificationExpiredException.class)
+    public ResponseEntity<ExceptionResponse> handleCodeVerificationExpiredException(CodeVerificationExpiredException ex) {
+        ExceptionResponse exceptionResponse = new ExceptionResponse(
+                new Date(),
+                HttpStatus.UNAUTHORIZED.value(),
+                "CODE_VERIFICATION_EXPIRED",
+                ex.getMessage(),
+                "CodeVerificationExpiredException"
+        );
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(CodeVerificationIncorrectException.class)
+    public ResponseEntity<ExceptionResponse> handleCodeVerificationIncorrectException(CodeVerificationIncorrectException ex) {
+        ExceptionResponse exceptionResponse = new ExceptionResponse(
+                new Date(),
+                HttpStatus.UNAUTHORIZED.value(),
+                "CODE_VERIFICATION_INCORRECT",
+                ex.getMessage(),
+                "CodeVerificationIncorrectException"
         );
         return new ResponseEntity<>(exceptionResponse, HttpStatus.UNAUTHORIZED);
     }

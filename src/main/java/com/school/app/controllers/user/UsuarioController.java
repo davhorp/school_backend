@@ -1,4 +1,4 @@
-package com.school.app.controllers;
+package com.school.app.controllers.user;
 
 import com.school.app.repository.UsuarioRepository;
 import com.school.app.services.user.RecommendUsernamesService;

@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -29,6 +30,10 @@ public class Usuario {
     private String passwordHash;
     @Column(nullable = false)
     private Boolean activo = true;
+    @Column(name = "reset_password_code", nullable = true, length = 8)
+    private String resetPasswordCode;
+    @Column(name = "reset_password_expire")
+    private LocalDateTime resetPasswordExpire;
     @Column(name = "acepto_terminos")
     private Boolean aceptoTerminos = false;
     // Relación con la tabla Personas

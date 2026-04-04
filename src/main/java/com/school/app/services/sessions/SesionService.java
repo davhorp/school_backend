@@ -1,6 +1,6 @@
 package com.school.app.services.sessions;
 
-import com.school.app.auth.service.JwtService;
+import com.school.app.services.auth.JwtService;
 import com.school.app.entity.SesionAcceso;
 import com.school.app.entity.Usuario;
 import com.school.app.repository.SesionRepository;

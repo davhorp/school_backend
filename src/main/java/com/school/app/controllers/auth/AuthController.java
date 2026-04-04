@@ -1,9 +1,9 @@
-package com.school.app.auth.controller;
+package com.school.app.controllers.auth;
 
-import com.school.app.auth.service.AuthService;
+import com.school.app.dto.requets.AuthRequest;
+import com.school.app.services.auth.AuthService;
 import com.school.app.dto.response.LoginResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

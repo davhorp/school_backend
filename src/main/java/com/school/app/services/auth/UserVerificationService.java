@@ -3,7 +3,7 @@ package com.school.app.services.auth;
 import com.school.app.entity.Usuario;
 import com.school.app.entity.VerificacionUsuario;
 import com.school.app.repository.UserVerificationRepository;
-import com.school.app.services.shipments.SendingEmailWithVerificationLinkService;
+import com.school.app.services.shipments.email.SendingEmailWithVerificationLinkService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +27,6 @@ public class UserVerificationService {
                 .tipoVerificacion("EMAIL")
                 .build();
         userVerificationRepository.save(verificacion);
-        sendingEmailWithVerificationLinkService.enviarEnlaceVerificacion(usr, token);
+        sendingEmailWithVerificationLinkService.sendVerificationLink(usr, token);
     }
 }

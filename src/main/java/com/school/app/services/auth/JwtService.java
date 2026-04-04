@@ -1,4 +1,4 @@
-package com.school.app.auth.service;
+package com.school.app.services.auth;
 
 import com.school.app.entity.User;
 import com.school.app.entity.Usuario;

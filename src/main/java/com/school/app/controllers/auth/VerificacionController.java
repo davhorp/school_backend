@@ -1,4 +1,4 @@
-package com.school.app.auth.controller;
+package com.school.app.controllers.auth;
 
 import com.school.app.entity.VerificacionUsuario;
 import com.school.app.services.auth.MarkTokenAsConsumedService;

@@ -1,6 +1,7 @@
-package com.school.app.services.shipments;
+package com.school.app.services.shipments.email;
 
 import com.school.app.entity.Usuario;
+import com.school.app.utils.UtilsMethodsSchool;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 public class SendingEmailWithVerificationLinkService {
 
     private final JavaMailSender mailSender;
+    private final UtilsMethodsSchool utilsMethodsSchool;
 
     @Value("${app.frontend.url}")
     private String frontendUrl;
@@ -23,7 +25,7 @@ public class SendingEmailWithVerificationLinkService {
     private String remitente;
 
     @Async
-    public void enviarEnlaceVerificacion(Usuario usr, String token) {
+    public void sendVerificationLink(Usuario usr, String token) {
         try {
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
@@ -46,21 +48,13 @@ public class SendingEmailWithVerificationLinkService {
                     <hr style="border: 0; border-top: 1px solid #eee;">
                     <p style="font-size: 12px; color: #888; text-align: center;">Si no solicitaste este registro, por favor ignora este correo.</p>
                 </div>
-                """.formatted(this.getNameFullUser(usr), urlVerificacion);
+                """.formatted(utilsMethodsSchool.getNameFullUser(usr), urlVerificacion);
             helper.setText(contenidoHtml, true); // true indica que es HTML
             mailSender.send(message);
         } catch (MessagingException e) {
             // Loguear el error para monitoreo
             throw new com.school.app.exceptions.MessagingException("Error al enviar email: " + e.getMessage());
         }
-    }
-
-    private String getNameFullUser(Usuario usr){
-        return usr.getPersona().getApellidoPaterno()
-                .concat(" ")
-                .concat(usr.getPersona().getApellidoMaterno())
-                .concat(" ")
-                .concat(usr.getPersona().getNombre());
     }
 
 }

@@ -1,6 +1,6 @@
-package com.school.app.auth.service;
+package com.school.app.services.auth;
 
-import com.school.app.auth.controller.AuthRequest;
+import com.school.app.dto.requets.AuthRequest;
 import com.school.app.dto.response.LoginResponse;
 import com.school.app.dto.response.ProfileDetailsResponse;
 import com.school.app.entity.*;

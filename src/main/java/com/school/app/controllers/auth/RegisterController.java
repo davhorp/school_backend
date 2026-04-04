@@ -1,4 +1,4 @@
-package com.school.app.controllers;
+package com.school.app.controllers.auth;
 
 import com.school.app.dto.requets.PersonRequest;
 import com.school.app.dto.response.RegisterPersonResponse;

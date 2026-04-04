@@ -3,6 +3,7 @@ server:
   servlet:
     context-path: /school_hermanos_grimm
 application:
+  version: 0.0.1-SNAPSHOT
   security:
     jwt:
       secret-key: 7fb8a3f2c5d1e4a9b0c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4
@@ -11,6 +12,8 @@ application:
       refresh-token:
         expiration: 60480000
 spring:
+  banner:
+    location: banner.txt
   mail:
     host: smtp.gmail.com
     port: 587
