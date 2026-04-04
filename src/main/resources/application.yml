@@ -11,6 +11,17 @@ application:
       refresh-token:
         expiration: 60480000
 spring:
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: school.d3mo.26@gmail.com
+    password: fupkcsobzyskxiam
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
   datasource:
     #url: jdbc:postgresql://localhost:5432/securitydb
     url: jdbc:postgresql://localhost:5432/school_control
@@ -26,6 +37,9 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
     show-sql: true
 app:
+  frontend:
+    url: http://192.168.100.35:4200
+    #url: http://192.168.100.35:8080/school_hermanos_grimm/auth
   school:
     properties:
       role: role

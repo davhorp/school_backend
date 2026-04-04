@@ -1,8 +1,7 @@
 package com.school.app.controllers;
 
 import com.school.app.dto.response.ExceptionResponse;
-import com.school.app.exceptions.ResourceAlreadyExistsException;
-import com.school.app.exceptions.ResourceNotFoundException;
+import com.school.app.exceptions.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -55,14 +54,51 @@ public class ExceptionResponseHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<Object> handleResourceNotFoundException(ResourceNotFoundException ex) {
+    public ResponseEntity<ExceptionResponse> handleResourceNotFoundException(ResourceNotFoundException ex) {
         ExceptionResponse exceptionResponse = new ExceptionResponse(
                 new Date(),
                 HttpStatus.NOT_FOUND.value(),
                 HttpStatus.NOT_FOUND.name(),
                 ex.getMessage(),
-                "IllegalArgumentException"
+                "ResourceNotFoundException"
         );
         return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(ExpiredJwtException.class)
+    public ResponseEntity<ExceptionResponse> handleExpiredJwtException(ExpiredJwtException ex) {
+        ExceptionResponse exceptionResponse = new ExceptionResponse(
+                new Date(),
+                HttpStatus.NOT_FOUND.value(),
+                HttpStatus.NOT_FOUND.name(),
+                ex.getMessage(),
+                "ExpiredJwtException"
+        );
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(MessagingException.class)
+    public ResponseEntity<ExceptionResponse> handleMessagingException(MessagingException ex) {
+        ExceptionResponse exceptionResponse = new ExceptionResponse(
+                new Date(),
+                HttpStatus.NOT_FOUND.value(),
+                HttpStatus.NOT_FOUND.name(),
+                ex.getMessage(),
+                "MessagingException"
+        );
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(UserNotActiveInTheSystemException.class)
+    public ResponseEntity<ExceptionResponse> handleUserNotActiveInTheSystemException(UserNotActiveInTheSystemException ex) {
+        ExceptionResponse exceptionResponse = new ExceptionResponse(
+                new Date(),
+                HttpStatus.UNAUTHORIZED.value(),
+                "USER_NOT_ACTIVE",
+                ex.getMessage(),
+                "UserNotActiveInTheSystemException"
+        );
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.UNAUTHORIZED);
+    }
+
 }

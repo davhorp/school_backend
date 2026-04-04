@@ -22,7 +22,7 @@ import java.lang.reflect.InvocationTargetException;
 
 @Service
 @RequiredArgsConstructor
-public class RegisterService {
+public class RegisterUserService {
 
     private final PersonaRepository personaRepository;
     private final DireccionRepository direccionRepository;
@@ -31,6 +31,7 @@ public class RegisterService {
     private final EstadoService estadoService;
     private final RolService rolService;
     private final SesionService sesionService;
+    private final UserVerificationService userVerificationService;
 
     @Transactional(rollbackFor = {InvocationTargetException.class, ResourceNotFoundException.class})
     public RegisterPersonResponse registerUser(PersonRequest request){
@@ -49,6 +50,7 @@ public class RegisterService {
                     passwordEncoder.encode(request.password())
             );
             usuarioRepository.save(usr);
+            userVerificationService.userVerificationAdd(usr);
             sesionService.saveSession(usr);
         }catch (IllegalArgumentException illegalArgumentException){
             throw new IllegalArgumentException(String.format("Error: %s", illegalArgumentException.getMessage()));

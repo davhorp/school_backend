@@ -39,7 +39,7 @@ public class PersonaDTO {
     public Usuario toEntityUser(PersonRequest dto, Persona person, Role rol, String pass){
         Usuario usr = new Usuario();
         usr.setPersona(person);
-        usr.setActivo(true);
+        usr.setActivo(false);
         usr.setEmail(dto.email());
         usr.setUsername(dto.username());
         usr.setPasswordHash(pass);

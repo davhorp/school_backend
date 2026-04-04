@@ -1,13 +1,12 @@
 package com.school.app.auth.service;
 
 import com.school.app.auth.controller.AuthRequest;
-import com.school.app.auth.controller.RegisterRequest;
-import com.school.app.auth.controller.TokenResponse;
-import com.school.app.repository.TokenRepository;
-import com.school.app.entity.Tokens;
-import com.school.app.entity.User;
-import com.school.app.repository.UserRepository;
-import jakarta.validation.constraints.NotNull;
+import com.school.app.dto.response.LoginResponse;
+import com.school.app.dto.response.ProfileDetailsResponse;
+import com.school.app.entity.*;
+import com.school.app.exceptions.ResourceNotFoundException;
+import com.school.app.exceptions.UserNotActiveInTheSystemException;
+import com.school.app.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,84 +21,78 @@ public class AuthService {
 
     private final UserRepository repository;
     private final TokenRepository tokenRepository;
+
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+    private final UsuarioRepository usuarioRepository;
+    private final SesionRepository sesionRepository;
+    private final RolPermisoRepository rolPermisoRepository;
 
-    public TokenResponse register(final RegisterRequest request) {
-        final User user = User.builder()
-                .name(request.name())
-                .email(request.email())
-                .password(passwordEncoder.encode(request.password()))
-                .build();
-
-        final User savedUser = repository.save(user);
-        final String jwtToken = jwtService.generateToken(savedUser);
-        final String refreshToken = jwtService.generateRefreshToken(savedUser);
-
-        saveUserToken(savedUser, jwtToken);
-        return new TokenResponse(jwtToken, refreshToken);
-    }
-
-    public TokenResponse authenticate(final AuthRequest request) {
+    public LoginResponse authenticateUser(final AuthRequest request){
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.email(),
                         request.password()
                 )
         );
-        final User user = repository.findByEmail(request.email())
-                .orElseThrow();
-        final String accessToken = jwtService.generateToken(user);
-        final String refreshToken = jwtService.generateRefreshToken(user);
-        revokeAllUserTokens(user);
-        saveUserToken(user, accessToken);
-        return new TokenResponse(accessToken, refreshToken);
+        Usuario usr = usuarioRepository.findByEmail(
+                request.email())
+                .orElseThrow(
+                        () ->
+                                new ResourceNotFoundException(String.format("El usuario con correo: %s no existe en el sistema", request.email())));
+        if (!usr.getActivo())
+            throw new UserNotActiveInTheSystemException(
+                    String.format("El usuario: %s no se encuentra activo debido a que la cuenta no ha sido verificada.", usr.getUsername()));
+        String accessToken = jwtService.generateTokenByUser(usr);
+        String accessTokenRefresh = jwtService.generateRefreshTokenByUser(usr);
+        revokeAllUserTokens(usr);
+        sesionRepository.updateSessionActiveAndTokens(usr.getIdUsuario(), accessToken, accessTokenRefresh);
+        return new LoginResponse(
+                accessToken,
+                accessTokenRefresh,
+                usr.getPersona().getNombre().concat(" ").concat(usr.getPersona().getApellidoPaterno().concat(" ").concat(usr.getPersona().getApellidoMaterno())),
+                new ProfileDetailsResponse(
+                        usr.getRol().getNombreRol().name(),
+                        rolPermisoRepository.findNombresPermisosByUsuario(usr.getIdUsuario().intValue())
+                ),
+                usr.getUsername(),
+                usr.getActivo(),
+                usr.getIdUsuario());
     }
 
-    private void saveUserToken(User user, String jwtToken) {
-        final Tokens token = Tokens.builder()
-                .user(user)
-                .token(jwtToken)
-                .tokenType(Tokens.TokenType.BEARER)
-                .isExpired(false)
-                .isRevoked(false)
-                .build();
-        tokenRepository.save(token);
-    }
-
-    private void revokeAllUserTokens(final User user) {
-        final List<Tokens> validUserTokens = tokenRepository.findAllValidTokenByUser(user.getId());
+    private void revokeAllUserTokens(final Usuario user) {
+        final List<SesionAcceso> validUserTokens = sesionRepository.findAllValidTokenByUser(user.getIdUsuario().intValue());
         if (!validUserTokens.isEmpty()) {
             validUserTokens.forEach(token -> {
-                token.setIsExpired(true);
-                token.setIsRevoked(true);
+                token.setRevoked(true);
+                token.setExpired(true);
             });
-            tokenRepository.saveAll(validUserTokens);
+            sesionRepository.saveAll(validUserTokens);
         }
     }
 
-    public TokenResponse refreshToken(@NotNull final String authentication) {
-
-        if (authentication == null || !authentication.startsWith("Bearer ")) {
-            throw new IllegalArgumentException("Invalid auth header");
-        }
-        final String refreshToken = authentication.substring(7);
-        final String userEmail = jwtService.extractUsername(refreshToken);
-        if (userEmail == null) {
-            return null;
-        }
-
-        final User user = this.repository.findByEmail(userEmail).orElseThrow();
-        final boolean isTokenValid = jwtService.isTokenValid(refreshToken, user);
-        if (!isTokenValid) {
-            return null;
-        }
-
-        final String accessToken = jwtService.generateRefreshToken(user);
-        revokeAllUserTokens(user);
-        saveUserToken(user, accessToken);
-
-        return new TokenResponse(accessToken, refreshToken);
-    }
+//    public TokenResponse refreshToken(@NotNull final String authentication) {
+//
+//        if (authentication == null || !authentication.startsWith("Bearer ")) {
+//            throw new IllegalArgumentException("Invalid auth header");
+//        }
+//        final String refreshToken = authentication.substring(7);
+//        final String userEmail = jwtService.extractUsername(refreshToken);
+//        if (userEmail == null) {
+//            return null;
+//        }
+//
+//        final User user = this.repository.findByEmail(userEmail).orElseThrow();
+//        final boolean isTokenValid = jwtService.isTokenValid(refreshToken, user);
+//        if (!isTokenValid) {
+//            return null;
+//        }
+//
+//        final String accessToken = jwtService.generateRefreshToken(user);
+//        revokeAllUserTokens(user);
+//        saveUserToken(user, accessToken);
+//
+//        return new TokenResponse(accessToken, refreshToken);
+//    }
 }

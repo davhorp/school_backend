@@ -17,10 +17,6 @@ public class JwtService {
 
     @Value("${application.security.jwt.secret-key}")
     private String secretKey;
-    @Value("${application.security.jwt.expiration}")
-    private long jwtExpiration;
-    @Value("${application.security.jwt.refresh-token.expiration}")
-    private long refreshExpiration;
 
     private static final long JWT_TIME_VALIDITY = 1000 * 60  * 15;
     private static final long JWT_TIME_REFRESH_VALIDATE = 1000 * 60  * 60 * 24;
@@ -98,6 +94,11 @@ public class JwtService {
     }
 
     public boolean isTokenValid(String token, User user) {
+        final String username = extractUsername(token);
+        return (username.equals(user.getEmail())) && !isTokenExpired(token);
+    }
+
+    public boolean isTokenValidByUser(String token, Usuario user) {
         final String username = extractUsername(token);
         return (username.equals(user.getEmail())) && !isTokenExpired(token);
     }

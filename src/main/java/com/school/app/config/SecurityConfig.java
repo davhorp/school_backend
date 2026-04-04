@@ -1,6 +1,7 @@
 package com.school.app.config;
 
-import com.school.app.entity.Tokens;
+import com.school.app.entity.SesionAcceso;
+import com.school.app.repository.SesionRepository;
 import com.school.app.repository.TokenRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -31,6 +32,8 @@ public class SecurityConfig {
     private final AuthenticationProvider authenticationProvider;
     private final TokenRepository tokenRepository;
 
+    private final SesionRepository sesionRepository;
+
     @Bean
     public SecurityFilterChain securityFilterChain(final HttpSecurity http) throws Exception {
         http
@@ -49,9 +52,7 @@ public class SecurityConfig {
                         logout.logoutUrl("/auth/logout")
                                 .addLogoutHandler(this::logout)
                                 .logoutSuccessHandler((request, response, authentication) -> SecurityContextHolder.clearContext())
-                )
-        ;
-
+                );
         return http.build();
     }
 
@@ -59,19 +60,17 @@ public class SecurityConfig {
             final HttpServletRequest request, final HttpServletResponse response,
             final Authentication authentication
     ) {
-
         final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             return;
         }
-
         final String jwt = authHeader.substring(7);
-        final Tokens storedToken = tokenRepository.findByToken(jwt)
+        final SesionAcceso storedToken = sesionRepository.findByTokenAcceso(jwt)
                 .orElse(null);
         if (storedToken != null) {
-            storedToken.setIsExpired(true);
-            storedToken.setIsRevoked(true);
-            tokenRepository.save(storedToken);
+            storedToken.setExpired(true);
+            storedToken.setRevoked(true);
+            sesionRepository.save(storedToken);
             SecurityContextHolder.clearContext();
         }
     }

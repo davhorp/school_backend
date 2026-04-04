@@ -16,6 +16,11 @@ public class SesionService {
     private final JwtService jwtService;
     private final SesionRepository sesionRepository;
 
+    /**
+     * M&eacute;todo para la persistencia de la entidad {@link SesionAcceso}
+     *
+     * @param user {@link Usuario} entidad, como par&aacute;metro de entrada.
+     */
     public void saveSession(Usuario user) {
         final SesionAcceso session = SesionAcceso.builder()
                 .expired(false)

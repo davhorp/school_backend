@@ -1,6 +1,5 @@
 package com.school.app.entity;
 
-import com.school.app.enums.RolType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,17 +11,18 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "roles")
-public class Role {
+@Table(name = "permisos")
+public class Permiso {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_rol")
-    private Long idRol;
-    @Enumerated(EnumType.STRING)
-    @Column(name = "nombre_rol", nullable = false)
-    private RolType nombreRol;
-    @Column(name = "descripcion", length = 255)
+    @Column(name = "id_permiso")
+    private Long idPermiso;
+    @Column(name = "nombre_permiso", unique = true, nullable = false, length = 100)
+    private String nombrePermiso;
+    @Column(columnDefinition = "TEXT")
     private String descripcion;
+    @Column(length = 50)
+    private String modulo;
 
 }

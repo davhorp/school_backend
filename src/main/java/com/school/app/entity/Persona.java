@@ -6,8 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -33,5 +31,7 @@ public class Persona {
     private String telefono;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    @OneToOne(mappedBy = "persona")
+    private Usuario usuario;
 
 }

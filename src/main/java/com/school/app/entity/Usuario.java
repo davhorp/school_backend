@@ -6,6 +6,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -36,5 +39,8 @@ public class Usuario {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_rol", referencedColumnName = "id_rol")
     private Role rol;
+    // Relación con la tabla intermedia de permisos personalizados
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
+    private Set<RolPermiso> rolesPermisos = new HashSet<>();
 
 }
