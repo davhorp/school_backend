@@ -137,4 +137,28 @@ public class ExceptionResponseHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(UserBlockedException.class)
+    public ResponseEntity<ExceptionResponse> handleUserBlockedException(UserBlockedException ex) {
+        ExceptionResponse exceptionResponse = new ExceptionResponse(
+                new Date(),
+                HttpStatus.BAD_REQUEST.value(),
+                "PHOTO_USER_ERROR",
+                ex.getMessage(),
+                "UserBlockedException"
+        );
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(UserBadCredentialsException.class)
+    public ResponseEntity<ExceptionResponse> handleUserBadCredentialsException(UserBadCredentialsException ex) {
+        ExceptionResponse exceptionResponse = new ExceptionResponse(
+                new Date(),
+                HttpStatus.BAD_REQUEST.value(),
+                "PHOTO_USER_ERROR",
+                ex.getMessage(),
+                "UserBadCredentialsException"
+        );
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
+    }
+
 }

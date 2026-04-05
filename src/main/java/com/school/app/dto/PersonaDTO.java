@@ -36,6 +36,17 @@ public class PersonaDTO {
         return persona;
     }
 
+    /**
+     * Metodo para setear los datos a la entidad.
+     *
+     * @param dto {@link PersonRequest} objeto, comp par&aacute;metro de entrada.
+     * @param person {@link Persona} entidad, comp par&aacute;metro de entrada.
+     * @param rol {@link Role} entidad, comp par&aacute;metro de entrada.
+     * @param pass Contraseña, comp par&aacute;metro de entrada.
+     *
+     * @return {@link Usuario} entidad recuperada, en este caso el campo activo esta como false ya que cuando el usuario,
+     * verifique su cuenta se pondra en true
+     */
     public Usuario toEntityUser(PersonRequest dto, Persona person, Role rol, String pass){
         Usuario usr = new Usuario();
         usr.setPersona(person);
@@ -45,6 +56,9 @@ public class PersonaDTO {
         usr.setPasswordHash(pass);
         usr.setRol(rol);
         usr.setAceptoTerminos(true);
+        usr.setBloqueado(false);
+        usr.setFotoPerfil(null);
+        usr.setIntentosFallidos(0);
         return usr;
     }
 }

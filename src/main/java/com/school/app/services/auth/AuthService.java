@@ -5,6 +5,8 @@ import com.school.app.dto.response.LoginResponse;
 import com.school.app.dto.response.ProfileDetailsResponse;
 import com.school.app.entity.*;
 import com.school.app.exceptions.ResourceNotFoundException;
+import com.school.app.exceptions.UserBadCredentialsException;
+import com.school.app.exceptions.UserBlockedException;
 import com.school.app.exceptions.UserNotActiveInTheSystemException;
 import com.school.app.repository.*;
 import lombok.RequiredArgsConstructor;
@@ -41,9 +43,16 @@ public class AuthService {
                 .orElseThrow(
                         () ->
                                 new ResourceNotFoundException(String.format("El usuario con correo: %s no existe en el sistema", request.email())));
+        if (usr.getBloqueado()) {
+            throw new UserBlockedException("Has superado los 3 intentos. Tu acceso ha sido restringido por seguridad. Contacte al administrador.");
+        }
         if (!usr.getActivo())
             throw new UserNotActiveInTheSystemException(
                     String.format("El usuario: %s no se encuentra activo debido a que la cuenta no ha sido verificada.", usr.getUsername()));
+        if (!passwordEncoder.matches(request.password(), usr.getPasswordHash())) {
+            procesarIntentoFallido(usr);
+            throw new UserBadCredentialsException("Credenciales incorrectas, del usuario.");
+        }
         String accessToken = jwtService.generateTokenByUser(usr);
         String accessTokenRefresh = jwtService.generateRefreshTokenByUser(usr);
         revokeAllUserTokens(usr);
@@ -59,6 +68,15 @@ public class AuthService {
                 usr.getUsername(),
                 usr.getActivo(),
                 usr.getIdUsuario());
+    }
+
+    private void procesarIntentoFallido(Usuario usuario) {
+        int nuevosIntentos = usuario.getIntentosFallidos() + 1;
+        usuario.setIntentosFallidos(nuevosIntentos);
+        if (nuevosIntentos >= 3) {
+            usuario.setBloqueado(true);
+        }
+        usuarioRepository.save(usuario);
     }
 
     private void revokeAllUserTokens(final Usuario user) {
