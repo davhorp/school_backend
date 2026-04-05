@@ -12,6 +12,10 @@ application:
       refresh-token:
         expiration: 60480000
 spring:
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
   banner:
     location: banner.txt
   mail:
@@ -46,3 +50,6 @@ app:
   school:
     properties:
       role: role
+media:
+  #location: mediafiles
+  location: /Users/davhorp/Documents/projects/github/uploads/photos/

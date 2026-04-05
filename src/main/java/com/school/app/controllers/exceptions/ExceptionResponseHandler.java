@@ -125,4 +125,16 @@ public class ExceptionResponseHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(exceptionResponse, HttpStatus.UNAUTHORIZED);
     }
 
+    @ExceptionHandler(PhotoUserErrorException.class)
+    public ResponseEntity<ExceptionResponse> handlePhotoUserErrorException(PhotoUserErrorException ex) {
+        ExceptionResponse exceptionResponse = new ExceptionResponse(
+                new Date(),
+                HttpStatus.BAD_REQUEST.value(),
+                "PHOTO_USER_ERROR",
+                ex.getMessage(),
+                "PhotoUserErrorException"
+        );
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
+    }
+
 }

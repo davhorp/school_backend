@@ -53,7 +53,7 @@ public class AuthService {
                 accessTokenRefresh,
                 usr.getPersona().getNombre().concat(" ").concat(usr.getPersona().getApellidoPaterno().concat(" ").concat(usr.getPersona().getApellidoMaterno())),
                 new ProfileDetailsResponse(
-                        usr.getRol().getNombreRol().name(),
+                        usr.getRol().getNombreRol().name().toLowerCase(),
                         rolPermisoRepository.findNombresPermisosByUsuario(usr.getIdUsuario().intValue())
                 ),
                 usr.getUsername(),
@@ -65,8 +65,8 @@ public class AuthService {
         final List<SesionAcceso> validUserTokens = sesionRepository.findAllValidTokenByUser(user.getIdUsuario().intValue());
         if (!validUserTokens.isEmpty()) {
             validUserTokens.forEach(token -> {
-                token.setRevoked(true);
-                token.setExpired(true);
+                token.setRevoked(false);//validar esto
+                token.setExpired(false);//validar esto
             });
             sesionRepository.saveAll(validUserTokens);
         }

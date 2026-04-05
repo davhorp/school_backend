@@ -28,6 +28,8 @@ public class Usuario {
     private String email;
     @Column(name = "password_hash", nullable = false, length = 255)
     private String passwordHash;
+    @Column(name = "foto_perfil", length = 255)
+    private String fotoPerfil;
     @Column(nullable = false)
     private Boolean activo = true;
     @Column(name = "reset_password_code", nullable = true, length = 8)
