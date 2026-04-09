@@ -5,7 +5,6 @@ import com.school.app.dto.response.ProfileDetailsResponse;
 import com.school.app.entity.Usuario;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.Named;
 
 import java.util.List;
 
