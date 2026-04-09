@@ -46,6 +46,8 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
     show-sql: true
 app:
+  admin:
+    email: davhorp90@gmail.com
   frontend:
     url: http://192.168.100.35:4200
     #url: http://192.168.100.35:8080/school_hermanos_grimm/auth
