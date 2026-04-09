@@ -52,4 +52,18 @@ public class Usuario {
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
     private Set<RolPermiso> rolesPermisos = new HashSet<>();
 
+    public void registrarFallo() {
+        this.intentosFallidos++;
+        if (this.intentosFallidos >= 3) {
+            this.bloqueado = true;
+        }
+    }
+
+    public String getNombreCompleto() {
+        return String.format("%s %s %s",
+                persona.getNombre(),
+                persona.getApellidoPaterno(),
+                persona.getApellidoMaterno());
+    }
+
 }

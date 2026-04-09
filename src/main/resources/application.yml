@@ -12,6 +12,8 @@ application:
       refresh-token:
         expiration: 60480000
 spring:
+  application:
+    name: school-app
   servlet:
     multipart:
       max-file-size: 10MB
@@ -53,3 +55,9 @@ app:
 media:
   #location: mediafiles
   location: /Users/davhorp/Documents/projects/github/uploads/photos/
+#logging:
+  #file:
+    #name: /Users/davhorp/Documents/projects/github/logs/school.log
+audit:
+  logs:
+    secret: school_app__0326
