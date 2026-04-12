@@ -33,5 +33,11 @@ public class Persona {
     private LocalDateTime updatedAt;
     @OneToOne(mappedBy = "persona")
     private Usuario usuario;
+    @Column(unique = true, length = 18)
+    private String curp;
+    @Column(name = "lugar_nacimiento", length = 100)
+    private String lugarNacimiento;
+    @Column(name = "tipo_sangre", length = 5)
+    private String tipoSangre;
 
 }
