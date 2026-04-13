@@ -31,6 +31,10 @@ public class Alumno {
     private Persona persona;
     @Column(name = "matricula", unique = true, length = 50)
     private String matricula;
+    @Column(name = "grado", length = 1)
+    private String grado;
+    @Column(name = "grupo", length = 1)
+    private String grupo;
     @Column(name = "activo", columnDefinition = "boolean default false")
     @Builder.Default
     private Boolean activo = false;

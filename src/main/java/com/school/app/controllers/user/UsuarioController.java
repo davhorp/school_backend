@@ -20,11 +20,11 @@ public class UsuarioController {
 
     @GetMapping("/verificar-disponibilidad-username")
     public ResponseEntity<?> verificar(@RequestParam String username) {
-        boolean disponible = !usuarioRepository.existsByUsername(username);
-
-        if (disponible) {
-            return ResponseEntity.ok(Map.of("disponible", true));
-        }
+//        boolean disponible = !usuarioRepository.existsByUsername(username);
+//
+//        if (disponible) {
+//            return ResponseEntity.ok(Map.of("disponible", true));
+//        }
 
         // Si no está disponible, enviamos las 3 sugerencias
         List<String> opciones = recommendUsernamesService.obtenerSugerencias(username);

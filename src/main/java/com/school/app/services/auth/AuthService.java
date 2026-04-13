@@ -65,12 +65,15 @@ public class AuthService {
         return loginMapper.toLoginResponse(usr, accessToken, refreshToken, rolPermisoRepository.findNombresPermisosByUsuario(usr.getIdUsuario().intValue()));
     }
 
+    //TODO revisar bien este flujo
     private void actualizarSesion(Usuario usr, String access, String refresh) {
         log.info("SESSION_UPDATE action=revoke_old_tokens userId={}", usr.getIdUsuario());
         sesionRepository.findAllValidTokenByUser(usr.getIdUsuario().intValue())
                 .forEach(token -> {
-                    token.setRevoked(true);
-                    token.setExpired(true);
+//                    token.setRevoked(true);
+//                    token.setExpired(true);
+                    token.setRevoked(false);
+                    token.setExpired(false);
                 });
         sesionRepository.updateSessionActiveAndTokens(usr.getIdUsuario(), access, refresh);
         log.info("SESSION_UPDATE action=tokens_updated userId={}", usr.getIdUsuario());

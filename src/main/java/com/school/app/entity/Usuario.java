@@ -44,6 +44,7 @@ public class Usuario {
     private Persona persona;
     private Integer intentosFallidos = 0;
     private Boolean bloqueado = false;
+    private Boolean changePassword = true;
     // Relación con la tabla Roles
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_rol", referencedColumnName = "id_rol")
